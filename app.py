@@ -1,4 +1,5 @@
 import streamlit as st
+import random
 
 # --- BEACH VIBES PAGE CONFIG ---
 st.set_page_config(page_title="My Beach Organizer", page_icon="🌴", layout="wide")
@@ -17,8 +18,24 @@ st.markdown("""
 st.sidebar.title("🧭 The Surf Report")
 page = st.sidebar.radio("Where are we paddling out to?", ["💻 The Daily Grind", "🥥 Island Time"])
 
+# --- QUOTES OF THE DAY ---
+# Here is our stash of good vibes!
+quotes = [
+    "“You can't stop the waves, but you can learn to surf.” – Jon Kabat-Zinn",
+    "“The ocean stirs the heart, inspires the imagination and brings eternal joy to the soul.” – Wyland",
+    "“Smell the sea and feel the sky. Let your soul and spirit fly.” – Van Morrison",
+    "“To escape and sit quietly on the beach — that's my idea of paradise.” – Emilia Wickstead",
+    "“Live in the sunshine, swim the sea, drink the wild air.” – Ralph Waldo Emerson"
+]
+# This picks a random quote from our stash every time the page loads
+daily_quote = random.choice(quotes)
+
 # --- MAIN HEADER ---
 st.title("🌊 The Flow State Organizer")
+
+# The new Quote of the Day section! 
+st.markdown(f"> **{daily_quote}** 🐚")
+
 st.write("Catch the good vibes and stay on top of your wave.")
 
 st.markdown("---")
