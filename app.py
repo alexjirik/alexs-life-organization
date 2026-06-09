@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import streamlit.components.v1 as components
 
 # --- BEACH VIBES PAGE CONFIG ---
 st.set_page_config(page_title="My Beach Organizer", page_icon="🌴", layout="wide")
@@ -18,6 +19,15 @@ st.markdown("""
 st.sidebar.title("🧭 The Surf Report")
 page = st.sidebar.radio("Where are we paddling out to?", ["💻 The Daily Grind", "🥥 Island Time"])
 
+st.sidebar.markdown("---")
+
+# --- THE BOOMBOX (SPOTIFY EMBED) ---
+st.sidebar.subheader("🎧 Jack Johnson Radio")
+# Swapped to Jack Johnson vibes!
+spotify_url = "https://open.spotify.com/embed/playlist/37i9dQZF1DZ06evO146hI7?utm_source=generator&theme=0"
+with st.sidebar:
+    components.iframe(spotify_url, height=352)
+
 # --- QUOTES OF THE DAY ---
 # Here is our stash of good vibes!
 quotes = [
@@ -33,7 +43,7 @@ daily_quote = random.choice(quotes)
 # --- MAIN HEADER ---
 st.title("🌊 The Flow State Organizer")
 
-# The new Quote of the Day section! 
+# The Quote of the Day section! 
 st.markdown(f"> **{daily_quote}** 🐚")
 
 st.write("Catch the good vibes and stay on top of your wave.")
