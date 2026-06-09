@@ -2,10 +2,11 @@ import streamlit as st
 import random
 import streamlit.components.v1 as components
 
-# --- BEACH VIBES PAGE CONFIG ---
-st.set_page_config(page_title="My Beach Organizer", page_icon="🌴", layout="wide")
+# --- CLEAN PAGE CONFIG ---
+st.set_page_config(page_title="Flow State", page_icon="🌊", layout="wide")
 
-# --- CUSTOM CSS FOR EXTRA SUNSHINE ---
+# --- SUBTLE STYLING ---
+# Keeps the soft, warm background tint for the sidebar
 st.markdown("""
 <style>
     [data-testid="stSidebar"] {
@@ -14,85 +15,83 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# --- SIDEBAR COMPASS ---
-st.sidebar.title("🧭 The Surf Report")
-page = st.sidebar.radio("Where are we paddling out to?", ["💻 The Daily Grind", "🥥 Island Time"])
+# --- SIDEBAR NAVIGATION ---
+st.sidebar.title("Navigation")
+page = st.sidebar.radio("Select a view:", ["Work Focus", "Life Balance"])
 
 st.sidebar.markdown("---")
 
-# --- THE BOOMBOX (SPOTIFY EMBED) ---
-st.sidebar.subheader("🎧 Jack Johnson Vibes")
+# --- FOCUS MUSIC ---
+st.sidebar.subheader("Acoustic Focus")
 spotify_url = "https://open.spotify.com/embed/album/4vM1HNAHAnB1Hq0L98Fto3?utm_source=generator"
 with st.sidebar:
     components.iframe(spotify_url, height=352)
 
-# --- QUOTES OF THE DAY ---
+# --- MINDFUL QUOTES ---
 quotes = [
+    "“Nature does not hurry, yet everything is accomplished.” – Lao Tzu",
+    "“The mind is like water. When it's turbulent, it's difficult to see. When it's calm, everything becomes clear.” – Prasad Mahes",
     "“You can't stop the waves, but you can learn to surf.” – Jon Kabat-Zinn",
-    "“The ocean stirs the heart, inspires the imagination and brings eternal joy to the soul.” – Wyland",
-    "“Smell the sea and feel the sky. Let your soul and spirit fly.” – Van Morrison",
-    "“To escape and sit quietly on the beach — that's my idea of paradise.” – Emilia Wickstead",
-    "“Live in the sunshine, swim the sea, drink the wild air.” – Ralph Waldo Emerson"
+    "“Breath is the bridge which connects life to consciousness.” – Thich Nhat Hanh",
+    "“Almost everything will work again if you unplug it for a few minutes, including you.” – Anne Lamott"
 ]
 daily_quote = random.choice(quotes)
 
 # --- MAIN HEADER ---
-st.title("🌊 The Flow State Organizer")
-st.markdown(f"> **{daily_quote}** 🐚")
-st.write("Catch the good vibes and stay on top of your wave.")
+st.title("Flow State Organizer")
+st.markdown(f"> *{daily_quote}*")
 st.markdown("---")
 
 # --- WORK PAGE ---
-if page == "💻 The Daily Grind":
-    st.header("Tackling the Big Kahunas 🏄‍♀️")
-    st.write("Keep your balance. Let's crush these work tasks so you can log off and chill!")
+if page == "Work Focus":
+    st.header("Work Focus")
+    st.write("Clear your mind and tackle today's priorities.")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("📋 The Lineup (To-Do)")
+        st.subheader("Current Tasks")
         
-        # We assign checkboxes to variables so Python can track them
-        task1 = st.checkbox("Send out morning emails")
-        task2 = st.checkbox("Finish the weekly report")
-        task3 = st.checkbox("Prep for the afternoon sync")
+        task1 = st.checkbox("Review morning emails")
+        task2 = st.checkbox("Draft weekly report")
+        task3 = st.checkbox("Prepare for afternoon sync")
         
-        # --- WAVE PROGRESS BAR LOGIC ---
+        # Progress Bar Logic
         work_tasks = [task1, task2, task3]
-        work_completed = sum(work_tasks) # Counts how many are True (checked)
+        work_completed = sum(work_tasks)
         work_total = len(work_tasks)
-        work_progress = int((work_completed / work_total) * 100) # Calculates the percentage
+        work_progress = int((work_completed / work_total) * 100)
         
-        st.markdown(f"**Swell Size: {work_progress}%** 🌊")
+        st.markdown(f"**Progress: {work_progress}%**")
         st.progress(work_progress)
         
     with col2:
-        st.subheader("🐚 Message in a Bottle (Notes)")
-        st.text_area("Drop your brilliant ideas and meeting notes right here...", height=150)
+        st.subheader("Brain Dump")
+        st.text_area("Drop meeting notes and quick ideas here...", height=150)
 
 # --- PERSONAL PAGE ---
-elif page == "🥥 Island Time":
-    st.header("High Tides & Good Vibes 🌺")
-    st.write("Time to nurture your personal life and soak up the sun.")
+elif page == "Life Balance":
+    st.header("Life Balance")
+    st.write("Take care of your space and your mind.")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.subheader("🛒 Shore Leave (Chores)")
+        st.subheader("Life Admin")
         
-        life_task1 = st.checkbox("Grab fresh fruit from the market")
-        life_task2 = st.checkbox("Do the laundry")
-        life_task3 = st.checkbox("Call the fam")
+        life_task1 = st.checkbox("Grocery run")
+        life_task2 = st.checkbox("Laundry")
+        life_task3 = st.checkbox("Call family")
         
-        # --- WAVE PROGRESS BAR LOGIC ---
+        # Progress Bar Logic
         life_tasks = [life_task1, life_task2, life_task3]
         life_completed = sum(life_tasks)
         life_total = len(life_tasks)
         life_progress = int((life_completed / life_total) * 100)
         
-        st.markdown(f"**Island Chill Level: {life_progress}%** 🌴")
+        st.markdown(f"**Progress: {life_progress}%**")
         st.progress(life_progress)
         
     with col2:
-        st.subheader("☀️ Sunset Journal")
-        st.text_area("What are you grateful for today?", height=150)
+        st.subheader("Journal")
+        st.text_area("What's on your mind today?", height=150)
