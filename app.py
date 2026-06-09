@@ -22,7 +22,6 @@ st.sidebar.markdown("---")
 
 # --- THE BOOMBOX (SPOTIFY EMBED) ---
 st.sidebar.subheader("🎧 Jack Johnson Vibes")
-# Anchored to a rock-solid album link so it never wipes out!
 spotify_url = "https://open.spotify.com/embed/album/4vM1HNAHAnB1Hq0L98Fto3?utm_source=generator"
 with st.sidebar:
     components.iframe(spotify_url, height=352)
@@ -52,9 +51,20 @@ if page == "💻 The Daily Grind":
     
     with col1:
         st.subheader("📋 The Lineup (To-Do)")
-        st.checkbox("Send out morning emails")
-        st.checkbox("Finish the weekly report")
-        st.checkbox("Prep for the afternoon sync")
+        
+        # We assign checkboxes to variables so Python can track them
+        task1 = st.checkbox("Send out morning emails")
+        task2 = st.checkbox("Finish the weekly report")
+        task3 = st.checkbox("Prep for the afternoon sync")
+        
+        # --- WAVE PROGRESS BAR LOGIC ---
+        work_tasks = [task1, task2, task3]
+        work_completed = sum(work_tasks) # Counts how many are True (checked)
+        work_total = len(work_tasks)
+        work_progress = int((work_completed / work_total) * 100) # Calculates the percentage
+        
+        st.markdown(f"**Swell Size: {work_progress}%** 🌊")
+        st.progress(work_progress)
         
     with col2:
         st.subheader("🐚 Message in a Bottle (Notes)")
@@ -69,9 +79,19 @@ elif page == "🥥 Island Time":
     
     with col1:
         st.subheader("🛒 Shore Leave (Chores)")
-        st.checkbox("Grab fresh fruit from the market")
-        st.checkbox("Do the laundry")
-        st.checkbox("Call the fam")
+        
+        life_task1 = st.checkbox("Grab fresh fruit from the market")
+        life_task2 = st.checkbox("Do the laundry")
+        life_task3 = st.checkbox("Call the fam")
+        
+        # --- WAVE PROGRESS BAR LOGIC ---
+        life_tasks = [life_task1, life_task2, life_task3]
+        life_completed = sum(life_tasks)
+        life_total = len(life_tasks)
+        life_progress = int((life_completed / life_total) * 100)
+        
+        st.markdown(f"**Island Chill Level: {life_progress}%** 🌴")
+        st.progress(life_progress)
         
     with col2:
         st.subheader("☀️ Sunset Journal")
