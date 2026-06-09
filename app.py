@@ -1,12 +1,10 @@
 import streamlit as st
 import random
-import streamlit.components.v1 as components
 
 # --- CLEAN PAGE CONFIG ---
 st.set_page_config(page_title="Flow State", page_icon="🌊", layout="wide")
 
 # --- SUBTLE STYLING ---
-# Keeps the soft, warm background tint for the sidebar
 st.markdown("""
 <style>
     [data-testid="stSidebar"] {
@@ -17,15 +15,9 @@ st.markdown("""
 
 # --- SIDEBAR NAVIGATION ---
 st.sidebar.title("Navigation")
-page = st.sidebar.radio("Select a view:", ["Work Focus", "Life Balance"])
+page = st.sidebar.radio("Select a view:", ["Work Focus", "Life Balance", "Groceries & Recipes"])
 
 st.sidebar.markdown("---")
-
-# --- FOCUS MUSIC ---
-st.sidebar.subheader("Acoustic Focus")
-spotify_url = "https://open.spotify.com/embed/album/4vM1HNAHAnB1Hq0L98Fto3?utm_source=generator"
-with st.sidebar:
-    components.iframe(spotify_url, height=352)
 
 # --- MINDFUL QUOTES ---
 quotes = [
@@ -60,14 +52,19 @@ if page == "Work Focus":
         work_tasks = [task1, task2, task3]
         work_completed = sum(work_tasks)
         work_total = len(work_tasks)
-        work_progress = int((work_completed / work_total) * 100)
         
+        # Avoid division by zero if list is empty
+        if work_total > 0:
+            work_progress = int((work_completed / work_total) * 100)
+        else:
+            work_progress = 0
+            
         st.markdown(f"**Progress: {work_progress}%**")
         st.progress(work_progress)
         
     with col2:
         st.subheader("Brain Dump")
-        st.text_area("Drop meeting notes and quick ideas here...", height=150)
+        st.text_area("Drop meeting notes and quick ideas here...", height=150, key="work_notes")
 
 # --- PERSONAL PAGE ---
 elif page == "Life Balance":
@@ -79,7 +76,7 @@ elif page == "Life Balance":
     with col1:
         st.subheader("Life Admin")
         
-        life_task1 = st.checkbox("Grocery run")
+        life_task1 = st.checkbox("Pay utility bills")
         life_task2 = st.checkbox("Laundry")
         life_task3 = st.checkbox("Call family")
         
@@ -87,11 +84,49 @@ elif page == "Life Balance":
         life_tasks = [life_task1, life_task2, life_task3]
         life_completed = sum(life_tasks)
         life_total = len(life_tasks)
-        life_progress = int((life_completed / life_total) * 100)
         
+        if life_total > 0:
+            life_progress = int((life_completed / life_total) * 100)
+        else:
+            life_progress = 0
+            
         st.markdown(f"**Progress: {life_progress}%**")
         st.progress(life_progress)
         
     with col2:
         st.subheader("Journal")
-        st.text_area("What's on your mind today?", height=150)
+        st.text_area("What's on your mind today?", height=150, key="life_journal")
+
+# --- GROCERIES & RECIPES PAGE ---
+elif page == "Groceries & Recipes":
+    st.header("Groceries & Recipes")
+    st.write("Plan your meals and organize your store runs.")
+    
+    # Top section for meal planning
+    st.subheader("Weekly Meal Plan & Recipe Ideas")
+    st.text_area("Write down your recipe ideas for the week here...", height=100, key="meal_plan")
+    
+    st.markdown("---")
+    
+    # Bottom section split into store-specific lists
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.subheader("Trader Joe's List")
+        st.text_area("Produce, frozen meals, snacks...", height=200, key="tj_list")
+        
+        # A helpful expander with ideas
+        with st.expander("TJ's Quick Meal Inspo"):
+            st.markdown("- Cauliflower Gnocchi + Pesto + Chicken Sausage")
+            st.markdown("- Mandarin Orange Chicken + Jasmine Rice + Broccoli")
+            st.markdown("- Steamed Lentils + Bruschetta Sauce + Feta")
+            
+    with col2:
+        st.subheader("Whole Foods List")
+        st.text_area("Fresh produce, bulk items, specialty ingredients...", height=200, key="wf_list")
+        
+        # A helpful expander with ideas
+        with st.expander("Whole Foods Inspo"):
+            st.markdown("- Hot bar items for a quick lunch")
+            st.markdown("- 365 brand organic pantry staples")
+            st.markdown("- Fresh salmon or meat from the counter")
