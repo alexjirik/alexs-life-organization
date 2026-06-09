@@ -48,12 +48,10 @@ if page == "Work Focus":
         task2 = st.checkbox("Draft weekly report")
         task3 = st.checkbox("Prepare for afternoon sync")
         
-        # Progress Bar Logic
         work_tasks = [task1, task2, task3]
         work_completed = sum(work_tasks)
         work_total = len(work_tasks)
         
-        # Avoid division by zero if list is empty
         if work_total > 0:
             work_progress = int((work_completed / work_total) * 100)
         else:
@@ -80,7 +78,6 @@ elif page == "Life Balance":
         life_task2 = st.checkbox("Laundry")
         life_task3 = st.checkbox("Call family")
         
-        # Progress Bar Logic
         life_tasks = [life_task1, life_task2, life_task3]
         life_completed = sum(life_tasks)
         life_total = len(life_tasks)
@@ -100,33 +97,49 @@ elif page == "Life Balance":
 # --- GROCERIES & RECIPES PAGE ---
 elif page == "Groceries & Recipes":
     st.header("Groceries & Recipes")
-    st.write("Plan your meals and organize your store runs.")
-    
-    # Top section for meal planning
-    st.subheader("Weekly Meal Plan & Recipe Ideas")
-    st.text_area("Write down your recipe ideas for the week here...", height=100, key="meal_plan")
-    
-    st.markdown("---")
+    st.write("Write your lists below, and matching recipes will appear automatically.")
     
     # Bottom section split into store-specific lists
     col1, col2 = st.columns(2)
     
     with col1:
         st.subheader("Trader Joe's List")
-        st.text_area("Produce, frozen meals, snacks...", height=200, key="tj_list")
-        
-        # A helpful expander with ideas
-        with st.expander("TJ's Quick Meal Inspo"):
-            st.markdown("- Cauliflower Gnocchi + Pesto + Chicken Sausage")
-            st.markdown("- Mandarin Orange Chicken + Jasmine Rice + Broccoli")
-            st.markdown("- Steamed Lentils + Bruschetta Sauce + Feta")
+        tj_list = st.text_area("Produce, frozen meals, snacks...", height=150, key="tj_list")
             
     with col2:
         st.subheader("Whole Foods List")
-        st.text_area("Fresh produce, bulk items, specialty ingredients...", height=200, key="wf_list")
-        
-        # A helpful expander with ideas
-        with st.expander("Whole Foods Inspo"):
-            st.markdown("- Hot bar items for a quick lunch")
-            st.markdown("- 365 brand organic pantry staples")
-            st.markdown("- Fresh salmon or meat from the counter")
+        wf_list = st.text_area("Fresh produce, bulk items...", height=150, key="wf_list")
+
+    st.markdown("---")
+
+    # --- DYNAMIC RECIPE LOGIC ---
+    st.subheader("Dynamic Meal Inspiration")
+    
+    # Combine both lists and make them lowercase for easy keyword searching
+    combined_cart = (tj_list + " " + wf_list).lower()
+    
+    # Our simple "database" of keywords and their corresponding recipes
+    recipe_database = {
+        "chicken": "- **Chicken Dish:** Mandarin Orange Chicken + Jasmine Rice + Broccoli\n- **Chicken Dish:** Lemon Herb Roasted Chicken",
+        "gnocchi": "- **Pasta Night:** Cauliflower Gnocchi + Pesto + Chicken Sausage",
+        "salmon": "- **Seafood:** Baked Miso Salmon with Asparagus\n- **Seafood:** Salmon Rice Bowl with Avocado",
+        "lentils": "- **Quick Meal:** Steamed Lentils + Bruschetta Sauce + Feta (TJ's classic!)",
+        "eggs": "- **Breakfast/Brunch:** Spinach and Feta Omelette\n- **Dinner:** Shakshuka with crusty bread",
+        "pasta": "- **Italian:** Garlic Parmesan Pasta\n- **Italian:** Pasta Primavera with seasonal veggies",
+        "tofu": "- **Plant-Based:** Crispy Tofu Stir-fry with soy sauce and ginger"
+    }
+    
+    suggested_recipes = []
+    
+    # Scan the combined cart for keywords
+    for ingredient, recipes in recipe_database.items():
+        if ingredient in combined_cart:
+            suggested_recipes.append(recipes)
+            
+    # Display the results
+    if suggested_recipes:
+        st.write("Based on your cart, you could make:")
+        for recipe in suggested_recipes:
+            st.markdown(recipe)
+    else:
+        st.info("Add items like 'chicken', 'salmon', 'gnocchi', 'pasta', or 'eggs' to your lists above to see recipe ideas!")
